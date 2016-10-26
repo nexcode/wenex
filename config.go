@@ -9,20 +9,9 @@ import (
 
 // DefaultConfig is default configuration options
 var DefaultConfig = map[string]interface{}{
-	"server": map[string]interface{}{
-		"http": map[string]interface{}{
-			"listen": ":3000",
-		},
-		"timeout": map[string]interface{}{
-			"read":  "30s",
-			"write": "30s",
-		},
-		// "https": map[string]interface{}{
-		// 	"listen": ":https",
-		// 	"crt":    "file.crt",
-		// 	"key":    "file.key",
-		// },
-	},
+	"server.http.listen":   ":3000",
+	"server.timeout.read":  "30s",
+	"server.timeout.write": "30s",
 }
 
 func newConfig(name string) (*Config, error) {
