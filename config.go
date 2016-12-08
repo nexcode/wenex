@@ -7,11 +7,13 @@ import (
 	"sync"
 )
 
-// DefaultConfig is default configuration options
-var DefaultConfig = map[string]interface{}{
-	"server.http.listen":   ":3000",
-	"server.timeout.read":  "30s",
-	"server.timeout.write": "30s",
+// GetDefaultConfig returns default configuration options
+func GetDefaultConfig() map[string]interface{} {
+	return map[string]interface{}{
+		"server.http.listen":   ":3000",
+		"server.timeout.read":  "30s",
+		"server.timeout.write": "30s",
+	}
 }
 
 func newConfig(name string) (*Config, error) {
