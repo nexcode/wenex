@@ -14,12 +14,12 @@ type Wenex struct {
 }
 
 // New func
-func New(configName string, defaultConfig map[string]interface{}) (*Wenex, error) {
-	if configName == "" {
-		configName = "wenex"
+func New(name string, defaultConfig map[string]interface{}) (*Wenex, error) {
+	if name == "" {
+		name = "wenex"
 	}
 
-	config, err := newConfig(configName)
+	config, err := newConfig(name)
 	if err != nil {
 		return nil, err
 	}
@@ -46,7 +46,7 @@ func New(configName string, defaultConfig map[string]interface{}) (*Wenex, error
 		Config: config,
 	}
 
-	if wnx.Logger, err = newLogger(); err != nil {
+	if wnx.Logger, err = newLogger(name); err != nil {
 		return nil, err
 	}
 

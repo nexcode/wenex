@@ -6,9 +6,7 @@ import (
 	"sync"
 )
 
-const DefaultLogger = "default"
-
-func newLogger() (func(string) *log.Logger, error) {
+func newLogger(name string) (func(string) *log.Logger, error) {
 	var err error
 	var mutex sync.Mutex
 
@@ -25,7 +23,7 @@ func newLogger() (func(string) *log.Logger, error) {
 		var file *os.File
 
 		if file, err = os.OpenFile(name+".log", os.O_WRONLY|os.O_APPEND|os.O_CREATE, 0644); err != nil {
-			if logger, ok := loggers[DefaultLogger]; ok {
+			if logger, ok := loggers[name]; ok {
 				logger.Print(err)
 			}
 
@@ -36,6 +34,6 @@ func newLogger() (func(string) *log.Logger, error) {
 		return loggers[name]
 	}
 
-	f(DefaultLogger)
+	loggers[""] = f(name)
 	return f, err
 }

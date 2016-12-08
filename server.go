@@ -52,7 +52,7 @@ func newServer(wnx *Wenex) ([2]*http.Server, error) {
 
 		servers[0] = &http.Server{
 			Addr:         addr,
-			ErrorLog:     wnx.Logger(DefaultLogger),
+			ErrorLog:     wnx.Logger(""),
 			Handler:      &handler,
 			ReadTimeout:  rTimeout,
 			WriteTimeout: wTimeout,
@@ -67,7 +67,7 @@ func newServer(wnx *Wenex) ([2]*http.Server, error) {
 
 		servers[1] = &http.Server{
 			Addr:         addr,
-			ErrorLog:     wnx.Logger(DefaultLogger),
+			ErrorLog:     wnx.Logger(""),
 			Handler:      &handler,
 			ReadTimeout:  rTimeout,
 			WriteTimeout: wTimeout,
