@@ -2,6 +2,7 @@ package wenex
 
 import (
 	"log"
+	"net"
 	"net/http"
 )
 
@@ -55,6 +56,15 @@ func New(name string, defaultConfig map[string]interface{}) (*Wenex, error) {
 	}
 
 	return wnx, nil
+}
+
+// ConnState method
+func (wnx *Wenex) ConnState(f func(net.Conn, http.ConnState)) {
+	for _, server := range wnx.servers {
+		if server != nil {
+			server.ConnState = f
+		}
+	}
 }
 
 // Run method
