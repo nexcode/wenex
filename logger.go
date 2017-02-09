@@ -30,7 +30,12 @@ func newLogger(name string) (func(string) *log.Logger, error) {
 			file = os.Stdout
 		}
 
-		loggers[name] = log.New(file, "[!] ", log.LstdFlags)
+		if loggers[""] != nil {
+			loggers[name] = log.New(file, loggers[""].Prefix(), loggers[""].Flags())
+		} else {
+			loggers[name] = log.New(file, "[!] ", log.LstdFlags)
+		}
+
 		return loggers[name]
 	}
 
