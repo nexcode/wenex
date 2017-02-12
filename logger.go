@@ -3,6 +3,7 @@ package wenex
 import (
 	"log"
 	"os"
+	"path"
 	"sync"
 )
 
@@ -22,11 +23,11 @@ func newLogger(name string) (func(string) *log.Logger, error) {
 
 		var file *os.File
 
-		if file, err = os.OpenFile(name+".log", os.O_WRONLY|os.O_APPEND|os.O_CREATE, 0644); err != nil {
-			if logger, ok := loggers[name]; ok {
-				logger.Print(err)
+		if err = os.MkdirAll(path.Dir(name), 0755); err == nil {
+			if file, err = os.OpenFile(name+".log", os.O_WRONLY|os.O_APPEND|os.O_CREATE, 0644); err != nil {
+				file = os.Stdout
 			}
-
+		} else {
 			file = os.Stdout
 		}
 
