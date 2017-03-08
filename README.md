@@ -13,7 +13,7 @@ Simple and fast web framework for Go
 
 ###### Download and install
 
-    go get github.com/astaxie/beego
+    go get -u github.com/nexcode/wenex
 
 ###### Simple example
 
