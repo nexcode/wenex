@@ -8,6 +8,8 @@ Simple and fast web framework for Go
 
 ## Table of Contents
 
+* [Build Status](https://travis-ci.org/nexcode/wenex)
+* [GoDoc Reference](https://godoc.org/github.com/nexcode/wenex)
 * [Requirements](#requirements)
 * [Quick Start](#quick-start)
   * [Download and Install](#download-and-install)
