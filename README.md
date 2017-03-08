@@ -17,7 +17,7 @@ Simple and fast web framework for Go
 
     Go >= 1.7
 
-## Quick start
+## Quick Start
 
 #### Download and Install
 
