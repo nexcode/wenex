@@ -27,6 +27,8 @@ import (
 	"github.com/nexcode/wenex"
 )
 
+const appName = "simpleapp"
+
 func first(w http.ResponseWriter, r *http.Request) {
 	io.WriteString(w, "Hello,")
 	wenex.GetRun(r.Context()).Next()
@@ -39,8 +41,9 @@ func second(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 	config := wenex.GetDefaultConfig()
+	config["log.filePrefix"] = "log/"
 
-	wnx, err := wenex.New("testapp", config)
+	wnx, err := wenex.New(appName, config)
 	if err != nil {
 		panic(err)
 	}
@@ -48,6 +51,8 @@ func main() {
 	if err = wnx.Router.Route("HEAD, GET", "/").Chain(first, second); err != nil {
 		panic(err)
 	}
+
+	wnx.Logger("info").Print("Running " + appName)
 
 	if err = wnx.Run(); err != nil {
 		panic(err)
