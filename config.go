@@ -13,7 +13,7 @@ func GetDefaultConfig() map[string]interface{} {
 		"server.http.listen":   ":3000",
 		"server.timeout.read":  "30s",
 		"server.timeout.write": "30s",
-		"log.pathPrefix":       "",
+		"log.filePrefix":       "",
 	}
 }
 
