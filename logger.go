@@ -17,8 +17,6 @@ func newLogger(wnx *Wenex, name string) (func(string) *log.Logger, error) {
 	loggers := make(map[string]*log.Logger)
 
 	f := func(name string) *log.Logger {
-		name = pathPrefix + name
-
 		mutex.Lock()
 		defer mutex.Unlock()
 
@@ -28,8 +26,8 @@ func newLogger(wnx *Wenex, name string) (func(string) *log.Logger, error) {
 
 		var file *os.File
 
-		if err = os.MkdirAll(path.Dir(name), 0755); err == nil {
-			if file, err = os.OpenFile(name+".log", os.O_WRONLY|os.O_APPEND|os.O_CREATE, 0644); err != nil {
+		if err = os.MkdirAll(path.Dir(pathPrefix+name), 0755); err == nil {
+			if file, err = os.OpenFile(pathPrefix+name+".log", os.O_WRONLY|os.O_APPEND|os.O_CREATE, 0644); err != nil {
 				file = os.Stdout
 			}
 		} else {
