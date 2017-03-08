@@ -7,13 +7,18 @@ import (
 	"sync"
 )
 
-func newLogger(name string) (func(string) *log.Logger, error) {
-	var err error
-	var mutex sync.Mutex
+func newLogger(wnx *Wenex, name string) (func(string) *log.Logger, error) {
+	pathPrefix, err := wnx.Config.String("log.pathPrefix")
+	if err != nil {
+		return nil, err
+	}
 
+	var mutex sync.Mutex
 	loggers := make(map[string]*log.Logger)
 
 	f := func(name string) *log.Logger {
+		name = pathPrefix + name
+
 		mutex.Lock()
 		defer mutex.Unlock()
 

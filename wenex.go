@@ -47,7 +47,7 @@ func New(name string, defaultConfig map[string]interface{}) (*Wenex, error) {
 		Config: config,
 	}
 
-	if wnx.Logger, err = newLogger(name); err != nil {
+	if wnx.Logger, err = newLogger(wnx, name); err != nil {
 		return nil, err
 	}
 
