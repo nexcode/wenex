@@ -5,17 +5,24 @@
 
 Simple and fast web framework for Go
 
+
+## Table of Contents
+* [Requirements](#requirements)
+* [Quick Start](#quick-start)
+  * [Download and Install](#download-and-install)
+  * [Simple Example](#simple-example)
+
 ## Requirements
 
     Go >= 1.7
 
-## Quick Start
+## Quick start
 
-###### Download and install
+##### Download and Install
 
     go get -u github.com/nexcode/wenex
 
-###### Simple example
+##### Simple Example
 
 ```go
 package main
