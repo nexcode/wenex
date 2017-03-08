@@ -4,3 +4,53 @@
 [![GoDoc](https://godoc.org/github.com/nexcode/wenex?status.svg)](https://godoc.org/github.com/nexcode/wenex)
 
 Simple and fast web framework for Go
+
+## Requirements
+
+    Go >= 1.7
+
+## Quick Start
+
+###### Download and install
+
+    go get github.com/astaxie/beego
+
+###### Simple example
+
+```go
+package main
+
+import (
+	"io"
+	"net/http"
+
+	"github.com/nexcode/wenex"
+)
+
+func first(w http.ResponseWriter, r *http.Request) {
+	io.WriteString(w, "first\n")
+}
+
+func second(w http.ResponseWriter, r *http.Request) {
+	io.WriteString(w, "second")
+}
+
+func main() {
+	config := wenex.GetDefaultConfig()
+
+	wnx, err := wenex.New("testapp", config)
+	if err != nil {
+		panic(err)
+	}
+
+	if err = wnx.Router.Route("HEAD, GET", "/").Chain(first, second); err != nil {
+		panic(err)
+	}
+
+	if err = wnx.Run(); err != nil {
+		panic(err)
+	}
+}
+```
+
+Open your browser and visit `http://localhost:3000`

@@ -8,7 +8,7 @@ import (
 )
 
 func newLogger(wnx *Wenex, name string) (func(string) *log.Logger, error) {
-	filePrefix, err := wnx.Config.String("log.filePfilePrefixrefixPrefix")
+	filePrefix, err := wnx.Config.String("log.filePrefix")
 	if err != nil {
 		return nil, err
 	}
