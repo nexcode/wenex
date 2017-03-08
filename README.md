@@ -28,11 +28,13 @@ import (
 )
 
 func first(w http.ResponseWriter, r *http.Request) {
-	io.WriteString(w, "first\n")
+	io.WriteString(w, "Hello,")
+	wenex.GetRun(r.Context()).Next()
+	io.WriteString(w, "!")
 }
 
 func second(w http.ResponseWriter, r *http.Request) {
-	io.WriteString(w, "second")
+	io.WriteString(w, " World")
 }
 
 func main() {
