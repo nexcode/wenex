@@ -5,7 +5,6 @@
 
 Simple and fast web framework for Go
 
-
 ## Table of Contents
 
 * [Build Status](https://travis-ci.org/nexcode/wenex)
@@ -37,7 +36,10 @@ import (
 	"github.com/nexcode/wenex"
 )
 
-const appName = "simpleapp"
+const (
+	appName = "simpleapp"
+	infoLog = "infolog"
+)
 
 func first(w http.ResponseWriter, r *http.Request) {
 	io.WriteString(w, "Hello,")
@@ -53,16 +55,16 @@ func main() {
 	config := wenex.GetDefaultConfig()
 	config["log.filePrefix"] = "log/"
 
-	wnx, err := wenex.New(appName, config)
+	wnx, err := wenex.New("simpleapp", config)
 	if err != nil {
 		panic(err)
 	}
 
-	if err = wnx.Router.Route("HEAD, GET", "/").Chain(first, second); err != nil {
+	if err = wnx.Router.Route("/", "HEAD", "GET").Chain(first, second); err != nil {
 		panic(err)
 	}
 
-	wnx.Logger("info").Print("Running " + appName)
+	wnx.Logger(infoLog).Print("Running " + appName)
 
 	if err = wnx.Run(); err != nil {
 		panic(err)

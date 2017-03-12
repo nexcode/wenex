@@ -12,15 +12,14 @@ type router struct {
 	method map[string][]*chain
 }
 
-func (r *router) Route(methods string, pattern string) *chain {
+func (r *router) Route(pattern string, methods ...string) *chain {
 	c := &chain{
 		pattern: r.parse(pattern),
 	}
 
 	c.lenPattern = len(c.pattern)
 
-	for _, method := range strings.Split(methods, ",") {
-		method = strings.Trim(method, " ")
+	for _, method := range methods {
 		r.method[method] = append(r.method[method], c)
 	}
 
