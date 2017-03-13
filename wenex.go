@@ -14,13 +14,15 @@ type Wenex struct {
 	servers [2]*http.Server
 }
 
-// New func
-func New(name string, defaultConfig map[string]interface{}) (*Wenex, error) {
-	if name == "" {
-		name = "wenex"
+// New return a new Wenex object.
+// defaultName: sets default config filename and default log filename.
+// defaultConfig: contains default configuration parameters. Doesn't replace parameters declared in configuration file and writes new values to configuration file.
+func New(defaultName string, defaultConfig map[string]interface{}) (*Wenex, error) {
+	if defaultName == "" {
+		defaultName = "wenex"
 	}
 
-	config, err := newConfig(name)
+	config, err := newConfig(defaultName)
 	if err != nil {
 		return nil, err
 	}
@@ -47,7 +49,7 @@ func New(name string, defaultConfig map[string]interface{}) (*Wenex, error) {
 		Config: config,
 	}
 
-	if wnx.Logger, err = newLogger(wnx, name); err != nil {
+	if wnx.Logger, err = newLogger(wnx, defaultName); err != nil {
 		return nil, err
 	}
 
