@@ -2,18 +2,18 @@ package wenex
 
 import "strings"
 
-func newRouter() *router {
-	return &router{
-		method: make(map[string][]*chain),
+func newRouter() *Router {
+	return &Router{
+		method: make(map[string][]*Chain),
 	}
 }
 
-type router struct {
-	method map[string][]*chain
+type Router struct {
+	method map[string][]*Chain
 }
 
-func (r *router) Route(pattern string, methods ...string) *chain {
-	c := &chain{
+func (r *Router) Route(pattern string, methods ...string) *Chain {
+	c := &Chain{
 		pattern: r.parse(pattern),
 	}
 
@@ -26,7 +26,7 @@ func (r *router) Route(pattern string, methods ...string) *chain {
 	return c
 }
 
-func (r *router) parse(pattern string) []string {
+func (r *Router) parse(pattern string) []string {
 	if len(pattern) == 0 || pattern[0] != '/' {
 		pattern = "/" + pattern
 	}

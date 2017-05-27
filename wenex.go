@@ -8,7 +8,7 @@ import (
 
 // Wenex struct
 type Wenex struct {
-	Router  *router
+	Router  *Router
 	Logger  func(string) *log.Logger
 	Config  *Config
 	servers [2]*http.Server

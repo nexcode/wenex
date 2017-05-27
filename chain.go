@@ -6,13 +6,13 @@ import (
 	"strings"
 )
 
-type chain struct {
+type Chain struct {
 	handler    []http.Handler
 	pattern    []string
 	lenPattern int
 }
 
-func (h *chain) Chain(handlers ...interface{}) error {
+func (h *Chain) Chain(handlers ...interface{}) error {
 	for _, handler := range handlers {
 		switch t := handler.(type) {
 		case http.Handler:
@@ -27,7 +27,7 @@ func (h *chain) Chain(handlers ...interface{}) error {
 	return nil
 }
 
-func (c *chain) match(URL *url.URL) bool {
+func (c *Chain) match(URL *url.URL) bool {
 	path := strings.Split(URL.EscapedPath(), "/")
 	lenPath := len(path)
 	query := URL.Query()

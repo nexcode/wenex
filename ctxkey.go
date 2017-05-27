@@ -2,7 +2,7 @@ package wenex
 
 import "context"
 
-type ctxKey byte
+type ctxKey uint8
 
 const (
 	ctxRun ctxKey = iota
