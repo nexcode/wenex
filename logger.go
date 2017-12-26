@@ -44,7 +44,13 @@ func newLogger(wnx *Wenex, name string) (func(string) *log.Logger, error) {
 		if loggers[""] != nil {
 			loggers[name] = log.New(file, loggers[""].Prefix(), loggers[""].Flags())
 		} else {
-			loggers[name] = log.New(file, "[!] ", log.LstdFlags)
+			if file.Name() == "/dev/stdout" || file.Name() == "/dev/stderr" {
+				filePrefix = name + ": "
+			} else {
+				filePrefix = ""
+			}
+
+			loggers[name] = log.New(file, "[!] "+filePrefix, log.LstdFlags)
 		}
 
 		return loggers[name]
