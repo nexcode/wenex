@@ -10,10 +10,10 @@ import (
 // GetDefaultConfig returns default configuration options
 func GetDefaultConfig() map[string]interface{} {
 	return map[string]interface{}{
-		"server.http.listen":   ":3000",
+		"server.http.listen":   ":http",
 		"server.timeout.read":  "30s",
 		"server.timeout.write": "30s",
-		"log.filePrefix":       "",
+		"log.filePrefix":       "log/",
 	}
 }
 
