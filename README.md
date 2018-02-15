@@ -53,7 +53,6 @@ func second(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 	config := wenex.GetDefaultConfig()
-	config["log.filePrefix"] = "log/"
 
 	wnx, err := wenex.New(appName, config)
 	if err != nil {
@@ -72,4 +71,4 @@ func main() {
 }
 ```
 
-Open your browser and visit `http://localhost:3000`
+Open your browser and visit `http://localhost`
