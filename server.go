@@ -28,6 +28,16 @@ func newServer(wnx *Wenex) ([2]*http.Server, error) {
 		return servers, err
 	}
 
+	tmp, err = wnx.Config.String("server.timeout.idle")
+	if err != nil {
+		return servers, err
+	}
+
+	idleTimeout, err := time.ParseDuration(tmp)
+	if err != nil {
+		return servers, err
+	}
+
 	handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		for _, value := range wnx.Router.method[r.Method] {
 			if value.match(r.URL) {
@@ -56,6 +66,7 @@ func newServer(wnx *Wenex) ([2]*http.Server, error) {
 			Handler:      &handler,
 			ReadTimeout:  rTimeout,
 			WriteTimeout: wTimeout,
+			IdleTimeout:  idleTimeout,
 		}
 	}
 

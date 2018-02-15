@@ -4,7 +4,6 @@ import (
 	"log"
 	"net"
 	"net/http"
-	"time"
 )
 
 // Wenex struct
@@ -59,18 +58,6 @@ func New(defaultName string, defaultConfig map[string]interface{}) (*Wenex, erro
 	}
 
 	return wnx, nil
-}
-
-// IdleTimeout is the maximum amount of time to wait for the
-// next request when keep-alives are enabled. If IdleTimeout
-// is zero, the value of ReadTimeout is used. If both are
-// zero, ReadHeaderTimeout is used.
-func (wnx *Wenex) IdleTimeout(d time.Duration) {
-	for _, server := range wnx.servers {
-		if server != nil {
-			server.IdleTimeout = d
-		}
-	}
 }
 
 // ConnState specifies an optional callback function that is
