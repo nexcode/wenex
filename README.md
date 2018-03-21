@@ -16,7 +16,7 @@ Simple and fast web framework for Go
 
 ## Requirements
 
-    Go >= 1.7
+    Go >= 1.8
 
 ## Quick Start
 
