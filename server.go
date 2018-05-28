@@ -82,6 +82,7 @@ func newServer(wnx *Wenex) ([2]*http.Server, error) {
 			Handler:      &handler,
 			ReadTimeout:  rTimeout,
 			WriteTimeout: wTimeout,
+			IdleTimeout:  idleTimeout,
 		}
 	}
 
