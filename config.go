@@ -66,11 +66,7 @@ func (c *Config) Load() error {
 		return err
 	}
 
-	if err := c.decoder.Decode(&c.data); err != nil {
-		return err
-	}
-
-	return nil
+	return c.decoder.Decode(&c.data)
 }
 
 func (c *Config) Save() error {
@@ -85,11 +81,7 @@ func (c *Config) Save() error {
 		return err
 	}
 
-	if err := c.encoder.Encode(c.data); err != nil {
-		return err
-	}
-
-	return nil
+	return c.encoder.Encode(c.data)
 }
 
 func (c *Config) Set(key string, value interface{}) {

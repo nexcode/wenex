@@ -12,13 +12,13 @@ type Chain struct {
 	lenPattern int
 }
 
-func (h *Chain) Chain(handlers ...interface{}) error {
+func (c *Chain) Chain(handlers ...interface{}) error {
 	for _, handler := range handlers {
 		switch t := handler.(type) {
 		case http.Handler:
-			h.handler = append(h.handler, t)
+			c.handler = append(c.handler, t)
 		case func(http.ResponseWriter, *http.Request):
-			h.handler = append(h.handler, http.HandlerFunc(t))
+			c.handler = append(c.handler, http.HandlerFunc(t))
 		default:
 			return ErrHandlerType
 		}
