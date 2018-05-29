@@ -16,7 +16,9 @@ type Wenex struct {
 
 // New return a new Wenex object.
 // defaultName sets default config filename and default log filename.
-// defaultConfig contains default configuration parameters. Doesn't replace parameters declared in configuration file and writes new values to configuration file.
+// defaultConfig contains default configuration parameters.
+// Doesn't replace parameters declared in configuration file
+// and writes new values to configuration file.
 func New(defaultName string, defaultConfig map[string]interface{}) (*Wenex, error) {
 	if defaultName == "" {
 		defaultName = "wenex"
@@ -71,7 +73,9 @@ func (wnx *Wenex) ConnState(f func(net.Conn, http.ConnState)) {
 	}
 }
 
-// Run starts the web server. If an error occurs during the operation, the error will be returned. The method goes to asleep.
+// Run starts the web server. If an error occurs
+// during the operation, the error will be returned.
+// This method goes to asleep.
 func (wnx *Wenex) Run() error {
 	if wnx.servers[0] == nil && wnx.servers[1] == nil {
 		return ErrNoServers
