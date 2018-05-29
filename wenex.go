@@ -14,9 +14,9 @@ type Wenex struct {
 	servers [2]*http.Server
 }
 
-// New return a new Wenex object.
-//  defaultName sets default config filename and default log filename.
-//  defaultConfig contains default configuration parameters.
+// New return a new Wenex object:
+//  defaultName: sets default config filename and default log filename.
+//  defaultConfig: contains default configuration parameters.
 // Doesn't replace parameters declared in configuration file
 // and writes new values to configuration file.
 func New(defaultName string, defaultConfig map[string]interface{}) (*Wenex, error) {
