@@ -3,7 +3,7 @@ package wenex
 import "errors"
 
 var (
-	// ErrHandlerType => Handler must be «http.Handler» or «func(http.ResponseWriter, *http.Request)»
+	// ErrHandlerType = Handler must be «http.Handler» or «func(http.ResponseWriter, *http.Request)»
 	ErrHandlerType = errors.New("Handler must be «http.Handler» or «func(http.ResponseWriter, *http.Request)»")
 
 	// ErrGetFromConfig = Can't get value from config file (trying to get mismatched types?)
