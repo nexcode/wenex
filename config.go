@@ -8,11 +8,11 @@ import (
 )
 
 // GetDefaultConfig returns default configuration options:
-// server.http.listen:   ":http"
-// server.timeout.read:  "30s"
-// server.timeout.write: "30s"
-// server.timeout.idle:  "30s"
-// log.filePrefix:       "log/"
+//  server.http.listen:   ":http"
+//  server.timeout.read:  "30s"
+//  server.timeout.write: "30s"
+//  server.timeout.idle:  "30s"
+//  log.filePrefix:       "log/"
 func GetDefaultConfig() map[string]interface{} {
 	return map[string]interface{}{
 		"server.http.listen":   ":http",
