@@ -16,8 +16,17 @@ type Router struct {
 	method map[string][]*Chain
 }
 
-func (r *Router) Route(pattern string, methods ...string) *Chain {
+func (r *Router) StrictRoute(pattern string, methods ...string) *Chain {
+	return r.route(true, pattern, methods)
+}
+
+func (r *Router) WeakRoute(pattern string, methods ...string) *Chain {
+	return r.route(false, pattern, methods)
+}
+
+func (r *Router) route(strict bool, pattern string, methods []string) *Chain {
 	c := &Chain{
+		strict:  strict,
 		pattern: r.parse(pattern),
 	}
 
@@ -57,13 +66,23 @@ func (r *Router) match(w http.ResponseWriter, re *http.Request) []http.Handler {
 		var pattern string
 
 		for i, pattern = range chain.pattern {
-			if pattern == path[i] || pattern == "*" {
+			if pattern == path[i] {
 				continue
 			}
 
-			if pattern[0] == ':' {
-				query.Add(pattern[1:], path[i])
-				continue
+			if path[i] != "" {
+				if pattern == "*" {
+					continue
+				}
+
+				if pattern == "" {
+					if !chain.strict {
+						continue
+					}
+				} else if pattern[0] == ':' {
+					query.Add(pattern[1:], path[i])
+					continue
+				}
 			}
 
 			i--
