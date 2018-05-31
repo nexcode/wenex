@@ -39,19 +39,13 @@ func newServer(wnx *Wenex) ([2]*http.Server, error) {
 	}
 
 	handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		for _, value := range wnx.Router.method[r.Method] {
-			if value.match(r.URL) {
-				run := newRun(w, r, value.handler)
+		run := newRun(w, r, wnx.Router.match(w, r))
 
-				for {
-					if !run.Next() {
-						return
-					}
-				}
+		for {
+			if !run.Next() {
+				break
 			}
 		}
-
-		http.NotFound(w, r)
 	})
 
 	if addr := wnx.Config.Get("server.http.listen"); addr != nil {

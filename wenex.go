@@ -81,6 +81,7 @@ func (wnx *Wenex) Run() error {
 		return ErrNoServers
 	}
 
+	wnx.chainValidation()
 	stop := make(chan error)
 
 	if wnx.servers[0] != nil {
@@ -106,4 +107,14 @@ func (wnx *Wenex) Run() error {
 	}
 
 	return <-stop
+}
+
+func (wnx *Wenex) chainValidation() {
+	for _, method := range wnx.Router.method {
+		for _, chain := range method {
+			if chain.handler == nil {
+				chain.handler = []http.Handler{http.NotFoundHandler()}
+			}
+		}
+	}
 }
