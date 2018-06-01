@@ -39,7 +39,7 @@ func newServer(wnx *Wenex) ([2]*http.Server, error) {
 	}
 
 	handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		run := newRun(w, r, wnx.Router.match(w, r))
+		run := newRun(w, r, wnx.Router.match(r))
 
 		for {
 			if !run.Next() {

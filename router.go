@@ -47,7 +47,7 @@ func (r *Router) parse(pattern string) []string {
 	return strings.Split(pattern, "/")
 }
 
-func (r *Router) match(w http.ResponseWriter, re *http.Request) []http.Handler {
+func (r *Router) match(re *http.Request) []http.Handler {
 	path := strings.Split(re.URL.EscapedPath(), "/")
 	lenPath := len(path)
 
