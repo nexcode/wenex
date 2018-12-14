@@ -36,11 +36,6 @@ import (
 	"github.com/nexcode/wenex"
 )
 
-const (
-	appName = "simpleapp"
-	infoLog = "infolog"
-)
-
 func first(w http.ResponseWriter, r *http.Request) {
 	io.WriteString(w, "Hello,")
 	wenex.GetRun(r.Context()).Next()
@@ -53,17 +48,18 @@ func second(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 	config := wenex.GetDefaultConfig()
+	config["server.http.listen"] = ":8080"
 
-	wnx, err := wenex.New(appName, config)
+	wnx, err := wenex.New("simpleApp", config)
 	if err != nil {
 		panic(err)
 	}
 
-	if err = wnx.Router.Route("/", "HEAD", "GET").Chain(first, second); err != nil {
+	if err = wnx.Router.StrictRoute("/", "HEAD", "GET").Chain(first, second); err != nil {
 		panic(err)
 	}
 
-	wnx.Logger(infoLog).Print("Running " + appName)
+	wnx.Logger("info").Print("running application...")
 
 	if err = wnx.Run(); err != nil {
 		panic(err)
@@ -71,4 +67,4 @@ func main() {
 }
 ```
 
-Open your browser and visit `http://localhost`
+Open your browser and visit `http://localhost:8080`
