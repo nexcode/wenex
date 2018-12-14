@@ -7,13 +7,13 @@ import (
 	"sync"
 )
 
-// GetDefaultConfig returns default configuration options:
+// DefaultConfig returns default configuration options:
 //  server.http.listen:   ":http"
 //  server.timeout.read:  "30s"
 //  server.timeout.write: "30s"
 //  server.timeout.idle:  "30s"
 //  log.filePrefix:       "log/"
-func GetDefaultConfig() map[string]interface{} {
+func DefaultConfig() map[string]interface{} {
 	return map[string]interface{}{
 		"server.http.listen":   ":http",
 		"server.timeout.read":  "30s",
@@ -55,6 +55,7 @@ func newConfig(name string) (*Config, error) {
 	return &config, nil
 }
 
+// Config struct
 type Config struct {
 	mutex   sync.Mutex
 	file    *os.File
@@ -63,6 +64,7 @@ type Config struct {
 	data    map[string]interface{}
 }
 
+// Load loads configuration from file.
 func (c *Config) Load() error {
 	c.mutex.Lock()
 	defer c.mutex.Unlock()
@@ -74,6 +76,7 @@ func (c *Config) Load() error {
 	return c.decoder.Decode(&c.data)
 }
 
+// Save saves the current configuration to file.
 func (c *Config) Save() error {
 	c.mutex.Lock()
 	defer c.mutex.Unlock()
@@ -89,6 +92,11 @@ func (c *Config) Save() error {
 	return c.encoder.Encode(c.data)
 }
 
+// Set sets the value to config.
+// The key washes to be separated by a dot symbol.
+// For example:
+//  wnx.Config.Set("key1", "value1")
+//  wnx.Config.Set("key2.key3", "value2")
 func (c *Config) Set(key string, value interface{}) {
 	c.mutex.Lock()
 	defer c.mutex.Unlock()
@@ -139,6 +147,12 @@ func (c *Config) Set(key string, value interface{}) {
 	data[path[i]] = value
 }
 
+// Get is a general method for getting the value
+// from config as interface{} type.
+// The key washes to be separated by a dot symbol.
+// For example:
+//  wnx.Config.Get("key1")
+//  wnx.Config.Get("key2.key3")
 func (c *Config) Get(key string) interface{} {
 	c.mutex.Lock()
 	defer c.mutex.Unlock()
@@ -163,6 +177,7 @@ func (c *Config) Get(key string) interface{} {
 	return data[path[i]]
 }
 
+// Bool returns a value as a boolean type or error.
 func (c *Config) Bool(key string) (bool, error) {
 	value, ok := c.Get(key).(bool)
 	if !ok {
@@ -172,6 +187,7 @@ func (c *Config) Bool(key string) (bool, error) {
 	return value, nil
 }
 
+// MustBool returns a value as a boolean type or runtime panic.
 func (c *Config) MustBool(key string) bool {
 	value, ok := c.Get(key).(bool)
 	if !ok {
@@ -181,6 +197,7 @@ func (c *Config) MustBool(key string) bool {
 	return value
 }
 
+// Float64 returns a value as a float64 type or error.
 func (c *Config) Float64(key string) (float64, error) {
 	value, ok := c.Get(key).(float64)
 	if !ok {
@@ -190,6 +207,7 @@ func (c *Config) Float64(key string) (float64, error) {
 	return value, nil
 }
 
+// MustFloat64 returns a value as a float64 type or runtime panic.
 func (c *Config) MustFloat64(key string) float64 {
 	value, ok := c.Get(key).(float64)
 	if !ok {
@@ -199,6 +217,7 @@ func (c *Config) MustFloat64(key string) float64 {
 	return value
 }
 
+// String returns a value as a string type or error.
 func (c *Config) String(key string) (string, error) {
 	value, ok := c.Get(key).(string)
 	if !ok {
@@ -208,6 +227,7 @@ func (c *Config) String(key string) (string, error) {
 	return value, nil
 }
 
+// MustString returns a value as a string type or runtime panic.
 func (c *Config) MustString(key string) string {
 	value, ok := c.Get(key).(string)
 	if !ok {
@@ -217,6 +237,7 @@ func (c *Config) MustString(key string) string {
 	return value
 }
 
+// Slice returns a value as a []interface{} type or error.
 func (c *Config) Slice(key string) ([]interface{}, error) {
 	value, ok := c.Get(key).([]interface{})
 	if !ok {
@@ -226,6 +247,7 @@ func (c *Config) Slice(key string) ([]interface{}, error) {
 	return value, nil
 }
 
+// MustSlice returns a value as a []interface{} type or runtime panic.
 func (c *Config) MustSlice(key string) []interface{} {
 	value, ok := c.Get(key).([]interface{})
 	if !ok {
@@ -235,6 +257,7 @@ func (c *Config) MustSlice(key string) []interface{} {
 	return value
 }
 
+// Map returns a value as a map[string]interface{} type or error.
 func (c *Config) Map(key string) (map[string]interface{}, error) {
 	value, ok := c.Get(key).(map[string]interface{})
 	if !ok {
@@ -244,6 +267,7 @@ func (c *Config) Map(key string) (map[string]interface{}, error) {
 	return value, nil
 }
 
+// MustMap returns a value as a map[string]interface{} type or runtime panic.
 func (c *Config) MustMap(key string) map[string]interface{} {
 	value, ok := c.Get(key).(map[string]interface{})
 	if !ok {

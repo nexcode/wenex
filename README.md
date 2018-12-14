@@ -47,7 +47,7 @@ func second(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	config := wenex.GetDefaultConfig()
+	config := wenex.DefaultConfig()
 	config["server.http.listen"] = ":8080"
 
 	wnx, err := wenex.New("simpleApp", config)

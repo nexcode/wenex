@@ -15,16 +15,16 @@ type Wenex struct {
 }
 
 // New return a new Wenex object:
-//  defaultName: sets default config filename and default log filename.
+//  name: sets default config filename and default log filename.
 //  defaultConfig: contains default configuration parameters.
 // Doesn't replace parameters declared in configuration file
 // and writes new values to configuration file.
-func New(defaultName string, defaultConfig map[string]interface{}) (*Wenex, error) {
-	if defaultName == "" {
-		defaultName = "wenex"
+func New(name string, defaultConfig map[string]interface{}) (*Wenex, error) {
+	if name == "" {
+		name = "wenex"
 	}
 
-	config, err := newConfig(defaultName)
+	config, err := newConfig(name)
 	if err != nil {
 		return nil, err
 	}
@@ -51,7 +51,7 @@ func New(defaultName string, defaultConfig map[string]interface{}) (*Wenex, erro
 		Config: config,
 	}
 
-	if wnx.Logger, err = newLogger(wnx, defaultName); err != nil {
+	if wnx.Logger, err = newLogger(wnx, name); err != nil {
 		return nil, err
 	}
 
