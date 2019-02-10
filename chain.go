@@ -4,6 +4,7 @@ import (
 	"net/http"
 )
 
+// Chain struct
 type Chain struct {
 	handler    []http.Handler
 	pattern    []string
@@ -11,6 +12,8 @@ type Chain struct {
 	lenPattern int
 }
 
+// Chain adds a http.Handler or func(http.ResponseWriter, *http.Request) to the chain.
+// It will be called on http request when the current router is selected.
 func (c *Chain) Chain(handlers ...interface{}) error {
 	for _, handler := range handlers {
 		switch t := handler.(type) {

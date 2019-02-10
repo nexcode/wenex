@@ -12,6 +12,7 @@ func newRouter() *Router {
 	}
 }
 
+// Router struct
 type Router struct {
 	method map[string][]*Chain
 }

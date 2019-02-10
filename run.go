@@ -5,6 +5,8 @@ import (
 	"net/http"
 )
 
+// GetRun return wenex.Run from context for current handler.
+// It used to manage current handlers chain.
 func GetRun(ctx context.Context) *Run {
 	runInterface := ctx.Value(ctxRun)
 
