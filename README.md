@@ -127,7 +127,9 @@ if err != nil {
 // Some code and wnx.Run()
 ```
 
-A config file (`simpleapp.conf`) appears in the working directory:
+A config file (`simpleapp.conf`) appears in the working directory.  
+From the `config` variable, only missing values will be written to the file.  
+Overwriting existing values will not occur.
 ```json
 {
     "log": {
