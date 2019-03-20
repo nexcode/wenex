@@ -149,7 +149,7 @@ A config file (`simpleapp.conf`) appears in the working directory:
 You can add any parameters directly to the file or use api:
 ```go
 wnx.Config.Set("key1.key2.keyN", 1000)
-err = wnx.Config.Save()
+err := wnx.Config.Save()
 ```
 
 After this, the config file will look like this:
