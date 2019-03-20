@@ -17,10 +17,12 @@ type Router struct {
 	method map[string][]*Chain
 }
 
+// StrictRoute routing binds expression to the end of line
 func (r *Router) StrictRoute(pattern string, methods ...string) *Chain {
 	return r.route(true, pattern, methods)
 }
 
+// WeakRoute routing don't binds expression to the end of line
 func (r *Router) WeakRoute(pattern string, methods ...string) *Chain {
 	return r.route(false, pattern, methods)
 }
