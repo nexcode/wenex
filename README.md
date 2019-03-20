@@ -17,6 +17,7 @@ Simple and fast web framework for Go
 * [Documentation](#documentation)
   * [Starting the webserver](#starting-the-webserver)
   * [Configuration options](#configuration-options)
+  * [Work with config file](#work-with-config-file)
 
 ## Requirements
 
@@ -111,3 +112,80 @@ In this simple example:
 * `server.timeout.idle` - connection idle timeout
 * `log.filePrefix` - prefix that will be added to all saved log files.
 	For example, if you use `log/` prefix, then all logs files will be in `log/` folder
+
+#### Work with config file
+
+If you run wenex with this config:
+```go
+config := wenex.DefaultConfig()
+
+wnx, err := wenex.New("simpleapp", config)
+if err != nil {
+	panic(err)
+}
+
+// Some code and wnx.Run()
+```
+
+A config file (`simpleapp.conf`) appears in the working directory:
+```json
+{
+    "log": {
+        "filePrefix": "log/"
+    },
+    "server": {
+        "http": {
+            "listen": ":http"
+        },
+        "timeout": {
+            "idle": "30s",
+            "read": "30s",
+            "write": "30s"
+        }
+    }
+}
+```
+
+You can add any parameters directly to the file or use api:
+```go
+wnx.Config.Set("key1.key2.keyN", 1000)
+err = wnx.Config.Save()
+```
+
+After this, the config file will look like this:
+```json
+{
+    "key1": {
+        "key2": {
+            "keyN": 1000
+        }
+    },
+    "log": {
+        "filePrefix": "log/"
+    },
+    "server": {
+        "http": {
+            "listen": ":http"
+        },
+        "timeout": {
+            "idle": "30s",
+            "read": "30s",
+            "write": "30s"
+        }
+    }
+}
+```
+
+You can get the value of the parameters by api:
+```go
+valueF64, err := wnx.Config.Float64("key1.key2.keyN")
+// Or use it (panic on type error):
+// value := wnx.Config.MustFloat64("key1.key2.keyN")
+
+valueStr, err := wnx.Config.String("server.http.listen")
+// Or use it (panic on type error):
+// value := wnx.Config.MustString("server.http.listen")
+
+// You can get the value as an interface{}
+valueInterface := wnx.Config.Get("key")
+```
