@@ -14,6 +14,8 @@ Simple and fast web framework for Go
 * [Quick Start](#quick-start)
   * [Download and Install](#download-and-install)
   * [Simple Example](#simple-example)
+* [Documentation](#documentation)
+  * [Starting the webserver](#starting-the-webserver)
 
 ## Requirements
 
@@ -51,7 +53,7 @@ func main() {
 	config := wenex.DefaultConfig()
 	config["server.http.listen"] = ":8080"
 
-	wnx, err := wenex.New("simpleApp", config)
+	wnx, err := wenex.New("simpleapp", config)
 	if err != nil {
 		panic(err)
 	}
@@ -69,3 +71,30 @@ func main() {
 ```
 
 Open your browser and visit `http://localhost:8080`
+
+## Documentation
+
+#### Starting the webserver
+
+In its simplest form, a webserver can be started like this:
+
+```go
+config := wenex.DefaultConfig()
+config["server.http.listen"] = ":8080"
+
+wnx, err := wenex.New("simpleapp", config)
+if err != nil {
+	panic(err)
+}
+
+// define routing and something else...
+
+if err = wnx.Run(); err != nil {
+	panic(err)
+}
+```
+
+In this simple example:
+`server.http.listen` - port that will listen to the webserver
+`simpleapp` - name of the application (a *simpleapp.conf* file will be created in the working directory)
+`config` - configuration parameter map
