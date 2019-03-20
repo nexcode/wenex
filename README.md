@@ -16,6 +16,7 @@ Simple and fast web framework for Go
   * [Simple Example](#simple-example)
 * [Documentation](#documentation)
   * [Starting the webserver](#starting-the-webserver)
+  * [Configuration options](#configuration-options)
 
 ## Requirements
 
@@ -97,4 +98,16 @@ if err = wnx.Run(); err != nil {
 In this simple example:  
 `server.http.listen` - port that will listen to the webserver  
 `simpleapp` - name of the application (a `simpleapp.conf` file will be created in the working directory)  
-`config` - configuration parameter map
+`config` - configuration options
+
+#### Configuration options
+
+* `server.http.listen` - port that will listen to http traffic
+* `server.https.listen` - port that will listen to TLS (https) traffic
+* `server.https.crt` - TLS certificate
+* `server.https.key` - TLS private key
+* `server.timeout.read` - connection read timeout
+* `server.timeout.write` - connection write timeout
+* `server.timeout.idle` - connection idle timeout
+* `log.filePrefix` - prefix that will be added to all saved log files.
+	For example, if you use `log/` prefix, then all logs files will be in `log/` folder
