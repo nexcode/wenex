@@ -94,7 +94,7 @@ if err = wnx.Run(); err != nil {
 }
 ```
 
-In this simple example:
-`server.http.listen` - port that will listen to the webserver
-`simpleapp` - name of the application (a *simpleapp.conf* file will be created in the working directory)
+In this simple example:  
+`server.http.listen` - port that will listen to the webserver  
+`simpleapp` - name of the application (a *simpleapp.conf* file will be created in the working directory)  
 `config` - configuration parameter map
