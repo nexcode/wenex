@@ -207,7 +207,7 @@ Routing declaration returns a method, that allows you to specify multiple handle
 `wnx.Router.StrictRoute(pattern, methods).Chain(handler1, handler2, handlerN)`
 
 Matching examples:
-```
+```go
 wnx.Router.StrictRoute("/*/:var/test/", "HEAD", "GET").Chain(...)
 // matching requests:
 // /sefsef/aaa/test/
