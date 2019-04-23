@@ -18,6 +18,7 @@ Simple and fast web framework for Go
   * [Starting the webserver](#starting-the-webserver)
   * [Configuration options](#configuration-options)
   * [Work with config file](#work-with-config-file)
+  * [Routing configuration](#routing-configuration)
 
 ## Requirements
 
@@ -191,3 +192,34 @@ valueStr, err := wnx.Config.String("server.http.listen")
 // You can get the value as an interface{}
 valueInterface := wnx.Config.Get("key")
 ```
+
+#### Routing configuration
+
+For the routing declaration in wenex two methods are used:
+* `wnx.Router.StrictRoute(pattern, methods)` - tied to the end of pattern
+* `wnx.Router.WeakRoute(pattern, methods)` - not tied to the end of pattern
+
+Wenex supports the following special constructs in the pattern:
+* `*` - a sequence of any characters, including the empty string
+* `:name` - value of this path element will be available as a value of a get-variable with the same name
+
+Routing declaration returns a method, that allows you to specify multiple handlers:  
+`wnx.Router.StrictRoute(pattern, methods).Chain(handler1, handler2, handlerN)`
+
+Matching examples:
+```
+wnx.Router.StrictRoute("/*/:var/test/", "HEAD", "GET").Chain(...)
+// matching requests:
+// /sefsef/aaa/test/
+// /zzz/qwe/test/
+
+wnx.Router.WeakRoute("/*/:var/test/", "HEAD", "GET").Chain(...)
+// matching requests:
+// /sefsef/aaa/test/
+// /zzz/zxc/test/rrr/
+// /zzz/gg/test/ppp/fff
+```
+
+Chains can run completely sequentially, or you can call the next chain before the first one has completed.  
+For this, the `Next()` method is used.  
+An example of this behavior is given in the section [Simple Example](#simple-example).
