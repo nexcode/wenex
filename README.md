@@ -14,11 +14,10 @@ Simple and fast web framework for Go
 * [Quick Start](#quick-start)
   * [Download and Install](#download-and-install)
   * [Simple Example](#simple-example)
-* [Documentation](#documentation)
-  * [Starting the webserver](#starting-the-webserver)
-  * [Configuration options](#configuration-options)
-  * [Work with config file](#work-with-config-file)
-  * [Routing configuration](#routing-configuration)
+* [Starting the webserver](#starting-the-webserver)
+* [Configuration options](#configuration-options)
+* [Work with config file](#work-with-config-file)
+* [Routing configuration](#routing-configuration)
 
 ## Requirements
 
@@ -75,9 +74,7 @@ func main() {
 
 Open your browser and visit `http://localhost:8080`
 
-## Documentation
-
-#### Starting the webserver
+## Starting the webserver
 
 In its simplest form, a webserver can be started like this:
 
@@ -102,7 +99,7 @@ In this simple example:
 `simpleapp` - name of the application (a `simpleapp.conf` file will be created in the working directory)  
 `config` - configuration options
 
-#### Configuration options
+## Configuration options
 
 * `server.http.listen` - port that will listen to http traffic
 * `server.https.listen` - port that will listen to TLS (https) traffic
@@ -114,7 +111,7 @@ In this simple example:
 * `log.filePrefix` - prefix that will be added to all saved log files.
 	For example, if you use `log/` prefix, then all logs files will be in `log/` folder
 
-#### Work with config file
+## Work with config file
 
 If you run wenex with this config:
 ```go
@@ -193,7 +190,7 @@ valueStr, err := wnx.Config.String("server.http.listen")
 valueInterface := wnx.Config.Get("key")
 ```
 
-#### Routing configuration
+## Routing configuration
 
 For the routing declaration in wenex two methods are used:
 * `wnx.Router.StrictRoute(pattern, methods)` - tied to the end of pattern
