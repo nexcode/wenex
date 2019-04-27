@@ -18,6 +18,7 @@ Simple and fast web framework for Go
 * [Configuration options](#configuration-options)
 * [Work with config file](#work-with-config-file)
 * [Routing configuration](#routing-configuration)
+* [Work with logger](#work-with-logger)
 
 ## Requirements
 
@@ -220,3 +221,20 @@ wnx.Router.WeakRoute("/*/:var/test/", "HEAD", "GET").Chain(...)
 Chains can run completely sequentially, or you can call the next chain before the first one has completed.  
 For this, the `Next()` method is used.  
 An example of this behavior is given in the section [Simple Example](#simple-example).
+
+## Work with logger
+
+Winx creates files with logs dynamically.  
+It use `log.filePrefix` fo path prefix fo all logs files.  
+For example:
+```go
+wnx.Logger("file1").Print("some data...")
+wnx.Logger("folder2/file2").Print("some data...")
+
+// default log file:
+wnx.Logger("").Print("some data...")
+```
+You can customize the logger in accordance with the std `log.logger` api:
+```go
+wnx.Logger("").SetPrefix("prefix")
+```
