@@ -8,7 +8,7 @@ import (
 func TestChain(t *testing.T) {
 	wnx, err := New("", nil)
 	if err != nil {
-		t.Error(err)
+		t.Fatal(err)
 	}
 
 	if err := wnx.Router.StrictRoute("/", "GET").Chain(nil); err != ErrHandlerType {
