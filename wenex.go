@@ -30,20 +30,21 @@ func New(name string, defaultConfig map[string]interface{}) (*Wenex, error) {
 		return nil, err
 	}
 
-	if defaultConfig != nil {
-		var needSave bool
+	if defaultConfig == nil {
+		defaultConfig = DefaultConfig()
+	}
 
-		for key, value := range defaultConfig {
-			if config.Get(key) == nil {
-				config.Set(key, value)
-				needSave = true
-			}
+	var needSave bool
+	for key, value := range defaultConfig {
+		if config.Get(key) == nil {
+			config.Set(key, value)
+			needSave = true
 		}
+	}
 
-		if needSave {
-			if err = config.Save(); err != nil {
-				return nil, err
-			}
+	if needSave {
+		if err = config.Save(); err != nil {
+			return nil, err
 		}
 	}
 
@@ -82,7 +83,7 @@ func (wnx *Wenex) Run() error {
 		return ErrNoServers
 	}
 
-	wnx.chainValidation()
+	wnx.fixEmptyChain()
 	stop := make(chan error)
 
 	if wnx.servers[0] != nil {
@@ -110,7 +111,7 @@ func (wnx *Wenex) Run() error {
 	return <-stop
 }
 
-func (wnx *Wenex) chainValidation() {
+func (wnx *Wenex) fixEmptyChain() {
 	for _, method := range wnx.Router.method {
 		for _, chain := range method {
 			if chain.handler == nil {

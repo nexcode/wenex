@@ -3,6 +3,7 @@ package wenex
 import (
 	"encoding/json"
 	"os"
+	"path"
 	"strings"
 	"sync"
 )
@@ -24,6 +25,12 @@ func DefaultConfig() map[string]interface{} {
 }
 
 func newConfig(name string) (*Config, error) {
+	if path := path.Dir(name); path != "" {
+		if err := os.MkdirAll(path, 0755); err != nil {
+			return nil, err
+		}
+	}
+
 	file, err := os.OpenFile(name+".conf", os.O_RDWR|os.O_CREATE, 0644)
 	if err != nil {
 		return nil, err
