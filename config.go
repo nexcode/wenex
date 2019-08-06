@@ -2,6 +2,7 @@ package wenex
 
 import (
 	"encoding/json"
+	"log"
 	"os"
 	"path"
 	"strings"
@@ -13,14 +14,20 @@ import (
 //  server.timeout.read:  "30s"
 //  server.timeout.write: "30s"
 //  server.timeout.idle:  "30s"
-//  log.filePrefix:       "log/"
+//  logger.defaultName:   "wenex"
+// "logger.namePrefix":   "log/",
+// "logger.usePrefix":    "[!] ",
+// "logger.useFlag":      log.LstdFlags,
 func DefaultConfig() map[string]interface{} {
 	return map[string]interface{}{
 		"server.http.listen":   ":http",
 		"server.timeout.read":  "30s",
 		"server.timeout.write": "30s",
 		"server.timeout.idle":  "30s",
-		"log.filePrefix":       "log/",
+		"logger.defaultName":   "wenex",
+		"logger.namePrefix":    "log/",
+		"logger.usePrefix":     "[!] ",
+		"logger.useFlag":       log.LstdFlags,
 	}
 }
 

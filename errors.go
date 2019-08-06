@@ -14,4 +14,7 @@ var (
 
 	// ErrNoServers = No servers to run. Set «server.http(s).listen» in configuration file
 	ErrNoServers = errors.New("No servers to run. Set «server.http(s).listen» in configuration file")
+
+	// ErrDefaultLogEmpty = Configuration value «logger.defaultName» must be a non-empty string
+	ErrDefaultLogEmpty = errors.New("Configuration value «logger.defaultName» must be a non-empty string")
 )

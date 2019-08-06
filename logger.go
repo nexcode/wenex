@@ -1,14 +1,39 @@
 package wenex
 
 import (
+	"io"
 	"log"
 	"os"
 	"path"
 	"sync"
 )
 
-func newLogger(wnx *Wenex, name string) (func(string) *log.Logger, error) {
-	filePrefix, err := wnx.Config.String("log.filePrefix")
+// LogWriter used to connect custom loggers to wenex
+type LogWriter interface {
+	GetWriter(string) (io.Writer, error)
+}
+
+func newLogger(wnx *Wenex, logWriter LogWriter) (func(string) *log.Logger, error) {
+	defaultName, err := wnx.Config.String("logger.defaultName")
+	if err != nil {
+		return nil, err
+	}
+
+	if defaultName == "" {
+		return nil, ErrDefaultLogEmpty
+	}
+
+	namePrefix, err := wnx.Config.String("logger.namePrefix")
+	if err != nil {
+		return nil, err
+	}
+
+	usePrefix, err := wnx.Config.String("logger.usePrefix")
+	if err != nil {
+		return nil, err
+	}
+
+	useFlag, err := wnx.Config.Float64("logger.useFlag")
 	if err != nil {
 		return nil, err
 	}
@@ -24,38 +49,24 @@ func newLogger(wnx *Wenex, name string) (func(string) *log.Logger, error) {
 			return logger
 		}
 
-		var file *os.File
+		var writer io.Writer
 
-		switch filePrefix {
-		case "+stdout":
-			file = os.Stdout
-		case "+stderr":
-			file = os.Stderr
-		default:
-			if err = os.MkdirAll(path.Dir(filePrefix+name), 0755); err == nil {
-				if file, err = os.OpenFile(filePrefix+name+".log", os.O_WRONLY|os.O_APPEND|os.O_CREATE, 0644); err != nil {
-					file = os.Stdout
-				}
-			} else {
-				file = os.Stdout
-			}
-		}
-
-		if loggers[""] != nil {
-			prefix := loggers[""].Prefix()
-
-			if file.Name() == "/dev/stdout" || file.Name() == "/dev/stderr" {
-				prefix += "[" + name + "] "
+		if logWriter == nil {
+			if err = os.MkdirAll(path.Dir(namePrefix+name), 0755); err != nil {
+				return loggers[""]
 			}
 
-			loggers[name] = log.New(file, prefix, loggers[""].Flags())
-		} else {
-			loggers[name] = log.New(file, "[!] ", log.LstdFlags)
+			if writer, err = os.OpenFile(namePrefix+name+".log", os.O_WRONLY|os.O_APPEND|os.O_CREATE, 0644); err != nil {
+				return loggers[""]
+			}
+		} else if writer, err = logWriter.GetWriter(namePrefix + name); err != nil {
+			return loggers[""]
 		}
 
+		loggers[name] = log.New(writer, usePrefix, int(useFlag))
 		return loggers[name]
 	}
 
-	loggers[""] = f(name)
+	loggers[""] = f(defaultName)
 	return f, err
 }

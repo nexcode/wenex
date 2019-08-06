@@ -5,7 +5,6 @@ import (
 	"log"
 	"net"
 	"net/http"
-	"path"
 	"sync"
 	"time"
 )
@@ -19,16 +18,16 @@ type Wenex struct {
 }
 
 // New return a new Wenex object:
-//  name: sets default config filename and default log basename.
+//  configFile: sets default config filename.
 //  defaultConfig: contains default configuration parameters.
 // Doesn't replace parameters declared in configuration file
 // and writes new values to configuration file.
-func New(name string, defaultConfig map[string]interface{}) (*Wenex, error) {
-	if name == "" {
-		name = "wenex"
+func New(configFile string, defaultConfig map[string]interface{}, logWriter LogWriter) (*Wenex, error) {
+	if configFile == "" {
+		configFile = "wenex"
 	}
 
-	config, err := newConfig(name)
+	config, err := newConfig(configFile)
 	if err != nil {
 		return nil, err
 	}
@@ -56,7 +55,7 @@ func New(name string, defaultConfig map[string]interface{}) (*Wenex, error) {
 		Config: config,
 	}
 
-	if wnx.Logger, err = newLogger(wnx, path.Base(name)); err != nil {
+	if wnx.Logger, err = newLogger(wnx, logWriter); err != nil {
 		return nil, err
 	}
 
