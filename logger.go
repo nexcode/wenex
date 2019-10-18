@@ -13,8 +13,8 @@ type LogWriter interface {
 	GetWriter(string) (io.Writer, error)
 }
 
-func newLogger(wnx *Wenex, logWriter LogWriter) (func(string) *log.Logger, error) {
-	defaultName, err := wnx.Config.String("logger.defaultName")
+func NewLogger(config *Config, logWriter LogWriter) (func(string) *log.Logger, error) {
+	defaultName, err := config.String("logger.defaultName")
 	if err != nil {
 		return nil, err
 	}
@@ -23,17 +23,17 @@ func newLogger(wnx *Wenex, logWriter LogWriter) (func(string) *log.Logger, error
 		return nil, ErrDefaultLogEmpty
 	}
 
-	namePrefix, err := wnx.Config.String("logger.namePrefix")
+	namePrefix, err := config.String("logger.namePrefix")
 	if err != nil {
 		return nil, err
 	}
 
-	usePrefix, err := wnx.Config.String("logger.usePrefix")
+	usePrefix, err := config.String("logger.usePrefix")
 	if err != nil {
 		return nil, err
 	}
 
-	useFlag, err := wnx.Config.Float64("logger.useFlag")
+	useFlag, err := config.Float64("logger.useFlag")
 	if err != nil {
 		return nil, err
 	}

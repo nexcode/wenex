@@ -31,7 +31,7 @@ func DefaultConfig() map[string]interface{} {
 	}
 }
 
-func newConfig(name string) (*Config, error) {
+func NewConfig(name string, defaultConfig map[string]interface{}) (*Config, error) {
 	if path := path.Dir(name); path != "" {
 		if err := os.MkdirAll(path, 0755); err != nil {
 			return nil, err
@@ -66,6 +66,10 @@ func newConfig(name string) (*Config, error) {
 		return nil, err
 	}
 
+	if err = config.loadDefault(defaultConfig); err != nil {
+		return nil, err
+	}
+
 	return &config, nil
 }
 
@@ -76,6 +80,27 @@ type Config struct {
 	decoder *json.Decoder
 	encoder *json.Encoder
 	data    map[string]interface{}
+}
+
+func (c *Config) loadDefault(defaultConfig map[string]interface{}) error {
+	if defaultConfig != nil {
+		var needSave bool
+
+		for key, value := range defaultConfig {
+			if c.Get(key) == nil {
+				c.Set(key, value)
+				needSave = true
+			}
+		}
+
+		if needSave {
+			if err := c.Save(); err != nil {
+				return err
+			}
+		}
+	}
+
+	return nil
 }
 
 // Load loads configuration from file.

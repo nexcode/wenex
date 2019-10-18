@@ -27,27 +27,13 @@ func New(configFile string, defaultConfig map[string]interface{}, logWriter LogW
 		configFile = "wenex"
 	}
 
-	config, err := newConfig(configFile)
-	if err != nil {
-		return nil, err
-	}
-
 	if defaultConfig == nil {
 		defaultConfig = DefaultConfig()
 	}
 
-	var needSave bool
-	for key, value := range defaultConfig {
-		if config.Get(key) == nil {
-			config.Set(key, value)
-			needSave = true
-		}
-	}
-
-	if needSave {
-		if err = config.Save(); err != nil {
-			return nil, err
-		}
+	config, err := NewConfig(configFile, defaultConfig)
+	if err != nil {
+		return nil, err
 	}
 
 	wnx := &Wenex{
@@ -55,7 +41,7 @@ func New(configFile string, defaultConfig map[string]interface{}, logWriter LogW
 		Config: config,
 	}
 
-	if wnx.Logger, err = newLogger(wnx, logWriter); err != nil {
+	if wnx.Logger, err = NewLogger(config, logWriter); err != nil {
 		return nil, err
 	}
 
