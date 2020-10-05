@@ -28,3 +28,10 @@ func (c *Chain) Chain(handlers ...interface{}) error {
 
 	return nil
 }
+
+// MustChain same as Chain, but causes panic
+func (c *Chain) MustChain(handlers ...interface{}) {
+	if err := c.Chain(handlers...); err != nil {
+		panic(err)
+	}
+}

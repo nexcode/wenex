@@ -92,23 +92,7 @@ func (wnx *Wenex) Run() error {
 
 		go func() {
 			defer wg.Done()
-
-			var (
-				crt string
-				key string
-			)
-
-			crt, err[1] = wnx.Config.String("server.https.crt")
-			if err[1] != nil {
-				return
-			}
-
-			key, err[1] = wnx.Config.String("server.https.key")
-			if err[1] != nil {
-				return
-			}
-
-			err[1] = wnx.servers[1].ListenAndServeTLS(crt, key)
+			err[1] = wnx.servers[1].ListenAndServeTLS("", "")
 		}()
 	}
 

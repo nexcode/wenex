@@ -218,100 +218,125 @@ func (c *Config) Get(key string) interface{} {
 
 // Bool returns a value as a boolean type or error.
 func (c *Config) Bool(key string) (bool, error) {
-	value, ok := c.Get(key).(bool)
-	if !ok {
-		return false, ErrGetFromConfig
+	valueInterface := c.Get(key)
+	if valueInterface == nil {
+		return false, ErrConfigValueNotFound
 	}
 
-	return value, nil
+	valueBool, ok := c.Get(key).(bool)
+	if !ok {
+		return false, ErrConfigValueMismatched
+	}
+
+	return valueBool, nil
 }
 
 // MustBool returns a value as a boolean type or runtime panic.
 func (c *Config) MustBool(key string) bool {
-	value, ok := c.Get(key).(bool)
-	if !ok {
-		panic(ErrGetFromConfig)
+	valueBool, err := c.Bool(key)
+	if err != nil {
+		panic(err)
 	}
 
-	return value
+	return valueBool
 }
 
 // Float64 returns a value as a float64 type or error.
 func (c *Config) Float64(key string) (float64, error) {
-	value, ok := c.Get(key).(float64)
-	if !ok {
-		return 0, ErrGetFromConfig
+	valueInterface := c.Get(key)
+	if valueInterface == nil {
+		return 0, ErrConfigValueNotFound
 	}
 
-	return value, nil
+	valueFloat64, ok := c.Get(key).(float64)
+	if !ok {
+		return 0, ErrConfigValueMismatched
+	}
+
+	return valueFloat64, nil
 }
 
 // MustFloat64 returns a value as a float64 type or runtime panic.
 func (c *Config) MustFloat64(key string) float64 {
-	value, ok := c.Get(key).(float64)
-	if !ok {
-		panic(ErrGetFromConfig)
+	valueFloat64, err := c.Float64(key)
+	if err != nil {
+		panic(err)
 	}
 
-	return value
+	return valueFloat64
 }
 
 // String returns a value as a string type or error.
 func (c *Config) String(key string) (string, error) {
-	value, ok := c.Get(key).(string)
-	if !ok {
-		return "", ErrGetFromConfig
+	valueInterface := c.Get(key)
+	if valueInterface == nil {
+		return "", ErrConfigValueNotFound
 	}
 
-	return value, nil
+	valueString, ok := valueInterface.(string)
+	if !ok {
+		return "", ErrConfigValueMismatched
+	}
+
+	return valueString, nil
 }
 
 // MustString returns a value as a string type or runtime panic.
 func (c *Config) MustString(key string) string {
-	value, ok := c.Get(key).(string)
-	if !ok {
-		panic(ErrGetFromConfig)
+	valueString, err := c.String(key)
+	if err != nil {
+		panic(err)
 	}
 
-	return value
+	return valueString
 }
 
 // Slice returns a value as a []interface{} type or error.
 func (c *Config) Slice(key string) ([]interface{}, error) {
-	value, ok := c.Get(key).([]interface{})
-	if !ok {
-		return nil, ErrGetFromConfig
+	valueInterface := c.Get(key)
+	if valueInterface == nil {
+		return nil, ErrConfigValueNotFound
 	}
 
-	return value, nil
+	valueSlice, ok := c.Get(key).([]interface{})
+	if !ok {
+		return nil, ErrConfigValueMismatched
+	}
+
+	return valueSlice, nil
 }
 
 // MustSlice returns a value as a []interface{} type or runtime panic.
 func (c *Config) MustSlice(key string) []interface{} {
-	value, ok := c.Get(key).([]interface{})
-	if !ok {
-		panic(ErrGetFromConfig)
+	valueSlice, err := c.Slice(key)
+	if err != nil {
+		panic(err)
 	}
 
-	return value
+	return valueSlice
 }
 
 // Map returns a value as a map[string]interface{} type or error.
 func (c *Config) Map(key string) (map[string]interface{}, error) {
-	value, ok := c.Get(key).(map[string]interface{})
-	if !ok {
-		return nil, ErrGetFromConfig
+	valueInterface := c.Get(key)
+	if valueInterface == nil {
+		return nil, ErrConfigValueNotFound
 	}
 
-	return value, nil
+	valueMap, ok := c.Get(key).(map[string]interface{})
+	if !ok {
+		return nil, ErrConfigValueMismatched
+	}
+
+	return valueMap, nil
 }
 
 // MustMap returns a value as a map[string]interface{} type or runtime panic.
 func (c *Config) MustMap(key string) map[string]interface{} {
-	value, ok := c.Get(key).(map[string]interface{})
-	if !ok {
-		panic(ErrGetFromConfig)
+	valueMap, err := c.Map(key)
+	if err != nil {
+		panic(err)
 	}
 
-	return value
+	return valueMap
 }

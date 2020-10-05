@@ -1,6 +1,7 @@
 package wenex
 
 import (
+	"crypto/tls"
 	"net/http"
 	"time"
 )
@@ -77,6 +78,37 @@ func newServer(wnx *Wenex) ([2]*http.Server, error) {
 			ReadTimeout:  rTimeout,
 			WriteTimeout: wTimeout,
 			IdleTimeout:  idleTimeout,
+		}
+
+		if servers[1].TLSConfig, err = stringCert(wnx, "server.https.stringCert"); err != nil {
+			return servers, err
+		}
+
+		if servers[1].TLSConfig != nil {
+			return servers, nil
+		}
+
+		if servers[1].TLSConfig, err = loadCert(wnx, "server.https.loadCert"); err != nil {
+			return servers, err
+		}
+
+		if servers[1].TLSConfig != nil {
+			return servers, nil
+		}
+
+		certManager, err := autoCert(wnx, "server.https.autoCert")
+		if err != nil {
+			return servers, err
+		}
+
+		if certManager == nil {
+			return servers, ErrNeedTLSConfigForHTTPS
+		}
+
+		servers[0].Handler = certManager.HTTPHandler(handler)
+
+		servers[1].TLSConfig = &tls.Config{
+			GetCertificate: certManager.GetCertificate,
 		}
 	}
 

@@ -1,7 +1,7 @@
 # wenex
 
 [![Build Status](https://api.travis-ci.com/nexcode/wenex.svg?branch=master)](https://travis-ci.com/nexcode/wenex)
-[![GoDoc](https://godoc.org/github.com/nexcode/wenex?status.svg)](https://godoc.org/github.com/nexcode/wenex)
+[![GoDoc](https://godoc.org/github.com/nexcode/wenex?status.svg)](https://pkg.go.dev/github.com/nexcode/wenex)
 [![Go Report Card](https://goreportcard.com/badge/github.com/nexcode/wenex)](https://goreportcard.com/report/github.com/nexcode/wenex)
 
 Simple and fast web framework for Go
@@ -56,7 +56,7 @@ func main() {
 	config := wenex.DefaultConfig()
 	config["server.http.listen"] = ":8080"
 
-	wnx, err := wenex.New("simpleapp", config)
+	wnx, err := wenex.New("simpleapp", config, nil)
 	if err != nil {
 		panic(err)
 	}
@@ -104,13 +104,20 @@ In this simple example:
 
 * `server.http.listen` - port that will listen to http traffic
 * `server.https.listen` - port that will listen to TLS (https) traffic
-* `server.https.crt` - TLS certificate
-* `server.https.key` - TLS private key
+* `server.https.stringCert.cert` - string containing certificate
+* `server.https.stringCert.key` - string containing private key
+* `server.https.loadCert.cert` - file containing certificate
+* `server.https.loadCert.key` - file containing private key
+* `server.https.autoCert.hosts` - array of domains
+* `server.https.autoCert.dirCache` - cache directory
 * `server.timeout.read` - connection read timeout
 * `server.timeout.write` - connection write timeout
 * `server.timeout.idle` - connection idle timeout
-* `log.filePrefix` - prefix that will be added to all saved log files.
+* `logger.defaultName` - log filename for empty logger
+* `logger.namePrefix` - prefix that will be added to all saved log files.
 	For example, if you use `log/` prefix, then all logs files will be in `log/` folder
+* `logger.useFlag` - sets the output flags for the logger. The flag bits are Ldate, Ltime, and so on
+* `logger.usePrefix` - string that will be added at the beginning of each message
 
 ## Work with config file
 
