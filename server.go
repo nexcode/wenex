@@ -1,8 +1,10 @@
 package wenex
 
 import (
+	"compress/gzip"
 	"crypto/tls"
 	"net/http"
+	"strings"
 	"time"
 )
 
@@ -48,6 +50,36 @@ func newServer(wnx *Wenex) ([2]*http.Server, error) {
 			}
 		}
 	})
+
+	gzipEnable, err := wnx.Config.Bool("server.gzip.enable")
+	if err != nil && err != ErrConfigValueNotFound {
+		return servers, err
+	}
+
+	if gzipEnable {
+		gzipLevel, err := wnx.Config.Float64("server.gzip.level")
+		if err != nil {
+			return servers, err
+		}
+
+		h := handler
+
+		handler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			if strings.Contains(r.Header.Get("Accept-Encoding"), "gzip") {
+				w.Header().Set("Content-Encoding", "gzip")
+
+				gz, err := gzip.NewWriterLevel(w, int(gzipLevel))
+				if err != nil {
+					panic(err)
+				}
+
+				defer gz.Close()
+				w = gzipResponseWriter{ResponseWriter: w, Writer: gz}
+			}
+
+			h.ServeHTTP(w, r)
+		})
+	}
 
 	if addr := wnx.Config.Get("server.http.listen"); addr != nil {
 		addr, ok := addr.(string)

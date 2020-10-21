@@ -102,6 +102,8 @@ In this simple example:
 
 ## Configuration options
 
+* `server.gzip.enable` - enables and disables gzip
+* `server.gzip.level` - gzip compression level
 * `server.http.listen` - port that will listen to http traffic
 * `server.https.listen` - port that will listen to TLS (https) traffic
 * `server.https.stringCert.cert` - string containing certificate
