@@ -40,7 +40,13 @@ func NewConfig(name string, defaultConfig map[string]interface{}) (*Config, erro
 
 	file, err := os.OpenFile(name+".conf", os.O_RDWR|os.O_CREATE, 0644)
 	if err != nil {
-		return nil, err
+		if os.IsPermission(err) {
+			if file, err = os.OpenFile(name+".conf", os.O_RDONLY, 0); err != nil {
+				return nil, err
+			}
+		} else {
+			return nil, err
+		}
 	}
 
 	fi, err := file.Stat()
