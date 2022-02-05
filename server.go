@@ -3,6 +3,8 @@ package wenex
 import (
 	"compress/gzip"
 	"crypto/tls"
+	"errors"
+	"github.com/nexcode/joneva"
 	"net/http"
 	"strings"
 	"time"
@@ -52,7 +54,7 @@ func newServer(wnx *Wenex) ([2]*http.Server, error) {
 	})
 
 	gzipEnable, err := wnx.Config.Bool("server.gzip.enable")
-	if err != nil && err != ErrConfigValueNotFound {
+	if err != nil && !errors.Is(err, joneva.ErrNotFound) {
 		return servers, err
 	}
 

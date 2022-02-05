@@ -1,6 +1,5 @@
 # wenex
 
-[![Build Status](https://api.travis-ci.com/nexcode/wenex.svg?branch=master)](https://travis-ci.com/nexcode/wenex)
 [![GoDoc](https://godoc.org/github.com/nexcode/wenex?status.svg)](https://pkg.go.dev/github.com/nexcode/wenex)
 [![Go Report Card](https://goreportcard.com/badge/github.com/nexcode/wenex)](https://goreportcard.com/report/github.com/nexcode/wenex)
 
@@ -22,7 +21,7 @@ Simple and fast web framework for Go
 
 ## Requirements
 
-    Go >= 1.8
+    Go >= 1.17
 
 ## Quick Start
 

@@ -2,6 +2,7 @@ package wenex
 
 import (
 	"context"
+	"github.com/nexcode/joneva"
 	"log"
 	"net"
 	"net/http"
@@ -13,7 +14,7 @@ import (
 type Wenex struct {
 	Router  *Router
 	Logger  func(string) *log.Logger
-	Config  *Config
+	Config  *joneva.Joneva
 	servers [2]*http.Server
 }
 
@@ -31,7 +32,7 @@ func New(configFile string, defaultConfig map[string]interface{}, logWriter LogW
 		defaultConfig = DefaultConfig()
 	}
 
-	config, err := NewConfig(configFile, defaultConfig)
+	config, err := joneva.New(configFile+".conf", defaultConfig)
 	if err != nil {
 		return nil, err
 	}

@@ -3,6 +3,7 @@ package wenex
 import (
 	"crypto/tls"
 	"errors"
+	"github.com/nexcode/joneva"
 
 	"golang.org/x/crypto/acme/autocert"
 )
@@ -85,7 +86,7 @@ func autoCert(wnx *Wenex, path string) (*autocert.Manager, error) {
 	dirCache, err := wnx.Config.String(path + ".dirCache")
 	if err == nil {
 		certManager.Cache = autocert.DirCache(dirCache)
-	} else if err != ErrConfigValueNotFound {
+	} else if !errors.Is(err, joneva.ErrNotFound) {
 		return nil, err
 	}
 

@@ -1,6 +1,7 @@
 package wenex
 
 import (
+	"github.com/nexcode/joneva"
 	"io"
 	"log"
 	"os"
@@ -13,7 +14,7 @@ type LogWriter interface {
 	GetWriter(string) (io.Writer, error)
 }
 
-func NewLogger(config *Config, logWriter LogWriter) (func(string) *log.Logger, error) {
+func NewLogger(config *joneva.Joneva, logWriter LogWriter) (func(string) *log.Logger, error) {
 	defaultName, err := config.String("logger.defaultName")
 	if err != nil {
 		return nil, err
