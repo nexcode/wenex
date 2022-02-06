@@ -25,14 +25,14 @@ type Wenex struct {
 // and writes new values to configuration file.
 func New(configFile string, defaultConfig map[string]interface{}, logWriter LogWriter) (*Wenex, error) {
 	if configFile == "" {
-		configFile = "wenex"
+		configFile = "wenex.conf"
 	}
 
 	if defaultConfig == nil {
 		defaultConfig = DefaultConfig()
 	}
 
-	config, err := joneva.New(configFile+".conf", defaultConfig)
+	config, err := joneva.New(configFile, defaultConfig)
 	if err != nil {
 		return nil, err
 	}
