@@ -52,15 +52,34 @@ func NewLogger(config *joneva.Joneva, logWriter LogWriter) (func(string) *log.Lo
 
 		var writer io.Writer
 
+		logPath := path.Dir(namePrefix + name)
 		if logWriter == nil {
-			if err = os.MkdirAll(path.Dir(namePrefix+name), 0755); err != nil {
-				return loggers[""]
+			info, err := os.Stat(logPath)
+			if err != nil {
+				print(err.Error())
 			}
 
-			if writer, err = os.OpenFile(namePrefix+name+".log", os.O_WRONLY|os.O_APPEND|os.O_CREATE, 0644); err != nil {
+			sameNameFileExists := !info.IsDir()
+			if sameNameFileExists {
+				if err = os.Rename(logPath, logPath+"tmp"); err != nil {
+					print(err.Error())
+				}
+			}
+
+			if err = os.MkdirAll(logPath, 0755); err != nil {
+				print(err.Error())
+			}
+
+			if sameNameFileExists {
+				if err = os.Rename(logPath+"tmp", logPath+"/"+info.Name()+".log"); err != nil {
+					print(err.Error())
+				}
+			}
+
+			if writer, err = os.OpenFile(logPath+".log", os.O_WRONLY|os.O_APPEND|os.O_CREATE, 0644); err != nil {
 				return loggers[""]
 			}
-		} else if writer, err = logWriter.GetWriter(namePrefix + name); err != nil {
+		} else if writer, err = logWriter.GetWriter(logPath); err != nil {
 			return loggers[""]
 		}
 
