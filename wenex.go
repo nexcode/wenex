@@ -2,12 +2,13 @@ package wenex
 
 import (
 	"context"
-	"github.com/nexcode/joneva"
 	"log"
 	"net"
 	"net/http"
 	"sync"
 	"time"
+
+	"github.com/nexcode/joneva"
 )
 
 // Wenex struct
@@ -19,22 +20,30 @@ type Wenex struct {
 }
 
 // New return a new Wenex object:
-//  configFile: sets default config filename.
-//  defaultConfig: contains default configuration parameters.
-// Doesn't replace parameters declared in configuration file
+//
+//	configFile: sets default config filename
+//	defaultConfig: contains default configuration parameters
+//	logWriter: interface for piping all logs to writer
+//	configOverride: overrides config values by values from specified files
+//
+// defaultConfig doesn't replace parameters declared in configuration file
 // and writes new values to configuration file.
-func New(configFile string, defaultConfig map[string]interface{}, logWriter LogWriter) (*Wenex, error) {
+func New(configFile string, defaultConfig map[string]interface{}, logWriter LogWriter, configOverride ...string) (*Wenex, error) {
 	if configFile == "" {
 		configFile = "wenex.conf"
-	}
-
-	if defaultConfig == nil {
-		defaultConfig = DefaultConfig()
 	}
 
 	config, err := joneva.New(configFile, defaultConfig)
 	if err != nil {
 		return nil, err
+	}
+
+	if len(configOverride) != 0 {
+		for _, override := range configOverride {
+			if err = config.Load(override); err != nil {
+				return nil, err
+			}
+		}
 	}
 
 	wnx := &Wenex{
