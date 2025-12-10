@@ -5,11 +5,11 @@ import (
 )
 
 func TestNew(t *testing.T) {
-	if _, err := New("", nil, nil); err != nil {
+	if _, err := New("", DefaultConfig(), nil); err != nil {
 		t.Error(err)
 	}
 
-	if _, err := New("wenex", DefaultConfig(), nil); err != nil {
+	if _, err := New("wenex.conf", DefaultConfig(), nil); err != nil {
 		t.Error(err)
 	}
 

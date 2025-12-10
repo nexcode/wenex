@@ -16,7 +16,7 @@ type Wenex struct {
 	Router  *Router
 	Logger  func(string) *log.Logger
 	Config  *joneva.Joneva
-	servers [2]*http.Server
+	Servers [2]*http.Server
 }
 
 // New return a new Wenex object:
@@ -55,7 +55,7 @@ func New(configFile string, defaultConfig map[string]interface{}, logWriter LogW
 		return nil, err
 	}
 
-	if wnx.servers, err = newServer(wnx); err != nil {
+	if wnx.Servers, err = newServer(wnx); err != nil {
 		return nil, err
 	}
 
@@ -66,7 +66,7 @@ func New(configFile string, defaultConfig map[string]interface{}, logWriter LogW
 // called when a client connection changes state. See the
 // ConnState type and associated constants for details.
 func (wnx *Wenex) ConnState(f func(net.Conn, http.ConnState)) {
-	for _, server := range wnx.servers {
+	for _, server := range wnx.Servers {
 		if server != nil {
 			server.ConnState = f
 		}
@@ -77,7 +77,7 @@ func (wnx *Wenex) ConnState(f func(net.Conn, http.ConnState)) {
 // during the operation, the error will be returned.
 // This method goes to asleep.
 func (wnx *Wenex) Run() error {
-	if wnx.servers[0] == nil && wnx.servers[1] == nil {
+	if wnx.Servers[0] == nil && wnx.Servers[1] == nil {
 		return ErrNoServers
 	}
 
@@ -88,21 +88,21 @@ func (wnx *Wenex) Run() error {
 		wg  sync.WaitGroup
 	)
 
-	if wnx.servers[0] != nil {
+	if wnx.Servers[0] != nil {
 		wg.Add(1)
 
 		go func() {
 			defer wg.Done()
-			err[0] = wnx.servers[0].ListenAndServe()
+			err[0] = wnx.Servers[0].ListenAndServe()
 		}()
 	}
 
-	if wnx.servers[1] != nil {
+	if wnx.Servers[1] != nil {
 		wg.Add(1)
 
 		go func() {
 			defer wg.Done()
-			err[1] = wnx.servers[1].ListenAndServeTLS("", "")
+			err[1] = wnx.Servers[1].ListenAndServeTLS("", "")
 		}()
 	}
 
@@ -133,12 +133,12 @@ func (wnx *Wenex) Close() error {
 	)
 
 	for i := 0; i <= 1; i++ {
-		if wnx.servers[i] != nil {
+		if wnx.Servers[i] != nil {
 			wg.Add(1)
 
 			go func(i int) {
 				defer wg.Done()
-				err[i] = wnx.servers[i].Close()
+				err[i] = wnx.Servers[i].Close()
 			}(i)
 		}
 	}
@@ -181,7 +181,7 @@ func (wnx *Wenex) Shutdown(timeout time.Duration) error {
 	)
 
 	for i := 0; i <= 1; i++ {
-		if wnx.servers[i] != nil {
+		if wnx.Servers[i] != nil {
 			wg.Add(1)
 
 			go func(i int) {
@@ -190,7 +190,7 @@ func (wnx *Wenex) Shutdown(timeout time.Duration) error {
 				ctx, cancel := context.WithTimeout(context.Background(), timeout)
 				defer cancel()
 
-				err[i] = wnx.servers[i].Shutdown(ctx)
+				err[i] = wnx.Servers[i].Shutdown(ctx)
 			}(i)
 		}
 	}

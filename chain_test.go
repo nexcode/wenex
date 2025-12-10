@@ -6,7 +6,7 @@ import (
 )
 
 func TestChain(t *testing.T) {
-	wnx, err := New("", nil, nil)
+	wnx, err := New("", DefaultConfig(), nil)
 	if err != nil {
 		t.Fatal(err)
 	}
